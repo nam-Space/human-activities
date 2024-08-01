@@ -2,6 +2,8 @@ import cv2
 import mediapipe as mp
 import pandas as pd
 
+import constants
+
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
@@ -12,8 +14,9 @@ pose = mpPose.Pose()
 mpDraw = mp.solutions.drawing_utils
 
 lm_list = []
-label = "TAY_PHAI"
+label = constants.action2
 no_of_frames = 200
+
 
 def make_landmark_timestep(results):
     print(results.pose_landmarks.landmark)
@@ -24,6 +27,7 @@ def make_landmark_timestep(results):
         c_lm.append(lm.z)
         c_lm.append(lm.visibility)
     return c_lm
+
 
 def draw_landmark_on_image(mpDraw, results, img):
     # Vẽ các đường nối
@@ -37,6 +41,7 @@ def draw_landmark_on_image(mpDraw, results, img):
         cv2.circle(img, (cx, cy), 10, (0, 0, 255), cv2.FILLED)
     return img
 
+
 while len(lm_list) <= no_of_frames:
     ret, frame = cap.read()
     if ret:
@@ -48,16 +53,16 @@ while len(lm_list) <= no_of_frames:
             # Ghi nhận thông số khung xương
             lm = make_landmark_timestep(results)
             lm_list.append(lm)
+
             # Vẽ khung xương lên ảnh
             frame = draw_landmark_on_image(mpDraw, results, frame)
 
-
         cv2.imshow("image", frame)
-        if cv2.waitKey(1) & 0xff == 27:
+        if cv2.waitKey(1) & 0xFF == 27:
             break
 
-# Write vào file csv
-df  = pd.DataFrame(lm_list)
+# Write vào file .txt
+df = pd.DataFrame(lm_list)
 df.to_csv(label + ".txt")
 cap.release()
 cv2.destroyAllWindows()

@@ -4,6 +4,8 @@ import numpy as np
 import threading
 import tensorflow as tf
 
+import constants
+
 label = "Warmup...."
 n_time_steps = 10
 lm_list = []
@@ -17,6 +19,7 @@ model = tf.keras.models.load_model("model.h5")
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+
 
 def make_landmark_timestep(results):
     c_lm = []
@@ -45,13 +48,16 @@ def draw_class_on_image(label, img):
     fontColor = (0, 255, 0)
     thickness = 2
     lineType = 2
-    cv2.putText(img, label,
-                bottomLeftCornerOfText,
-                font,
-                fontScale,
-                fontColor,
-                thickness,
-                lineType)
+    cv2.putText(
+        img,
+        label,
+        bottomLeftCornerOfText,
+        font,
+        fontScale,
+        fontColor,
+        thickness,
+        lineType,
+    )
     return img
 
 
@@ -63,9 +69,9 @@ def detect(model, lm_list):
     results = model.predict(lm_list)
     print(results)
     if results[0][0] > 0.5:
-        label = "TAY TRAI"
+        label = constants.action1
     else:
-        label = "TAY PHAI"
+        label = constants.action2
     return label
 
 
@@ -87,7 +93,13 @@ while True:
             lm_list.append(c_lm)
             if len(lm_list) == n_time_steps:
                 # predict
-                t1 = threading.Thread(target=detect, args=(model, lm_list,))
+                t1 = threading.Thread(
+                    target=detect,
+                    args=(
+                        model,
+                        lm_list,
+                    ),
+                )
                 t1.start()
                 lm_list = []
 
@@ -95,7 +107,7 @@ while True:
 
     img = draw_class_on_image(label, img)
     cv2.imshow("Image", img)
-    if cv2.waitKey(1) & 0xff == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()

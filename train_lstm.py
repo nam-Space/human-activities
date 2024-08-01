@@ -6,9 +6,11 @@ from keras.models import Sequential
 
 from sklearn.model_selection import train_test_split
 
+import constants
+
 # Đọc dữ liệu
-action1 = pd.read_csv("TAY_TRAI.txt")
-action2 = pd.read_csv("TAY_PHAI.txt")
+action1 = pd.read_csv(f"{constants.action1}.txt")
+action2 = pd.read_csv(f"{constants.action2}.txt")
 
 X = []
 y = []
