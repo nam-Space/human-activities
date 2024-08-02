@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/696d121e-2dfb-4a2e-8ee8-3812d8316d22)# Human Behavior Recognition using OpenCV
+# Human Behavior Recognition using OpenCV
 
 This project focuses on recognizing and classifying human behaviors using OpenCV, a powerful open-source computer vision and machine learning software library. The application can detect and interpret various human actions from video feeds or recorded videos.
 
