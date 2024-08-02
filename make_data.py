@@ -14,7 +14,7 @@ pose = mpPose.Pose()
 mpDraw = mp.solutions.drawing_utils
 
 lm_list = []
-label = constants.action2
+label = constants.action1
 no_of_frames = 200
 
 

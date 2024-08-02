@@ -1,2 +1,2 @@
-action1 = "CHAY"
-action2 = "BOI"
+action1 = "ACTION1"
+action2 = "ACTION2"
